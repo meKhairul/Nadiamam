@@ -4,21 +4,23 @@ using namespace std;
 #define GRAY 1
 #define BLACK 2
 stack <int> s;
-int counts;
-int G[100][100],G2[100][100];
-int color[100], d[100], f[100], prev[100],scc[100];
+int counts=0;
+int G[10][10],G2[10][10];
+int color[10], color1[10] , d[10], f[10], prev[10],scc[10];
 int times=0;
 int maxfunc(int n)
 {
-    int m=0;
+    int m=-1,j;
     for(int i=0; i<n; i++)
     {
         if(m<f[i])
         {
-            m=i;
+            m=f[i];
+            j=i;
         }
     }
-    return m;
+    f[j]=0;
+    return j;
 }
 void print_path(int s, int v)
 {
@@ -40,13 +42,14 @@ void DFS_visit1(int u, int n)
 {
     //times++;
     u=maxfunc(n);
+    //cout << "max : " << u  << " " << f[u] << "\n";
     //d[u]=times;
-    color[u]=GRAY;
+    color1[u]=GRAY;
     for(int v=0; v<n; v++)
     {
         if(G2[u][v]==1)
         {
-            if(color[v]==WHITE)
+            if(color1[v]==WHITE)
             {
                 //prev[v]=u;
                 DFS_visit1(v,n);
@@ -55,7 +58,8 @@ void DFS_visit1(int u, int n)
     }
 
 
-    color[u]=BLACK;
+    color1[u]=BLACK;
+    f[u]=0;
     scc[u]=counts;
     //s.push(u);
 }
@@ -85,16 +89,16 @@ void DFS1(int n)
 {
     for(int i=0; i<n; i++)
     {
-        color[i]=WHITE;
+        color1[i]=WHITE;
         prev[i]=-1;
 
     }
 
     for(int u=0; u<n; u++)
     {
-        if(color[u]==WHITE)
+        if(color1[u]==WHITE)
             counts++;
-        DFS_visit1(u,n);
+            DFS_visit1(u,n);
     }
 }
 
@@ -142,58 +146,35 @@ int main()
         G2[v][u]=1;
     }
 
-    for(int i=0; i<n; i++)
+    /*for(int i=0; i<n; i++)
     {
         for(int j=0; j<n; j++)
         {
             printf("%-4d",G[i][j]);
         }
         printf("\n");
-    }
+    }*/
 
     DFS(n);
+    /*for(int i=0;i<n;i++)
+    {
+        cout << f[i] << " ";
+    }*/
     DFS1(n);
-    while(counts--)
+    //cout <<counts;
+    for(int k = counts;k>=1;k--)
     {
         for(int i=0; i<n; i++)
         {
-            if(scc[i]==counts)
+            //cout << "scc : " << scc[i] << " " ;
+            if(scc[i]==k)
             {
                 cout << i << " ";
             }
         }
+        cout << "\n";
     }
 
-    //while(!s.empty())
-    //{
-    //cout<<s.top() << " ";
-    //s.pop();
-//}
-    /*for(int i=0;i<n;i++)
-    {
-        printf("%d ",color[i]);
-    }
-    printf("\n");
 
-    for(int i=0;i<n;i++)
-    {
-        printf("%d ",d[i]);
-    }
-
-    printf("\n");
-    for(int i=0;i<n;i++)
-    {
-        printf("%d ",f[i]);
-    }
-
-    printf("\n");
-
-    for(int i=0;i<n;i++)
-    {
-        printf("%d ",prev[i]);
-    }
-
-    printf("\n");
-    print_path(0,5);*/
     return 0;
 }
