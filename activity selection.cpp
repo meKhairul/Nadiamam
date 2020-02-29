@@ -12,27 +12,25 @@ int main()
     }
     for(int k=0;k<n;k++)
     {
-        for(int l=0;l<n;l++)
+        for(int l=k+1;l<n;l++)
         {
             if(f[k]>f[l])
             {
-                int temp=f[l];
-                f[l]=f[k];
-                f[k]=temp;
-                temp=s[l];
-                s[l]=s[k];
-                s[k]=temp;
+                swap(f[k],f[l]);
+                swap(s[k],s[l]);
             }
         }
     }
     int counter = 1,k=0;
-    for(int j = k+1;j<n;j++)
+    cout << counter <<"---Start time :" << s[0] << " Finish time :" << f[0] << "\n";
+    for(int j = 1;j<n;j++)
     {
         if(s[j]>=f[k])
         {
+
             k=j;
             counter++;
+            cout << counter << "---Start time :" << s[j] << " Finish time :" << f[j] << "\n";
         }
     }
-    cout << counter << endl;
 }
